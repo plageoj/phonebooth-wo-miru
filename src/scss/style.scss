@@ -1,1 +1,20 @@
-/* put your styles here */
+#pdm-filter-rooms {
+    border: 1px solid #535f78;
+    background-color: #fff;
+    margin-bottom: 0.5rem;
+    border-radius: 1rem;
+    padding: 0 1.5rem;
+    color: #212121;
+    transition: 0.2s ease;
+    transition-property: background-color, border-color, color;
+
+    &:hover {
+        border-color: #009;
+    }
+
+    &.active {
+        background-color: #009;
+        border-color: #fff;
+        color: #fff;
+    }
+}

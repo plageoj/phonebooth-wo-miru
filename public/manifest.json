@@ -1,34 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "",
+  "name": "フォンブースだけ見る (pdm)",
   "version": "1.0.0",
-  "description": "",
+  "description": "WeWorkのフォンブースだけを表示します",
   "minimum_chrome_version": "88",
   "icons": {
     "50": "icons/icon50.png"
   },
-  "permissions": [
-    "tabs",
-    "scripting"
-  ],
-  "host_permissions": [
-    "https://example.com**"
-  ],
   "content_scripts": [
     {
       "matches": [
-        "https://example.com**"
+        "https://members.wework.com/workplaceone/content2/rooms"
       ],
       "js": [
         "main.js"
       ],
       "css": [
         "style.css"
-      ],
-      "all_frames": true
+      ]
     }
-  ],
-  "background": {
-    "service_worker": "background.js"
-  }
+  ]
 }

@@ -1,14 +1,11 @@
 {
-  "name": "ts-crx",
-  "version": "1.0.2",
+  "name": "pdm",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "lint": "eslint --fix --ext .ts src/",
     "build": "webpack --config webpack/webpack.prod.js",
     "dev": "webpack --config webpack/webpack.dev.js --watch"
-  },
-  "dependencies": {
-    "ical.js": "^1.5.0"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.260",
@@ -19,7 +16,6 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-node": "^11.1.0",
     "mini-css-extract-plugin": "^2.8.0",
-    "prettier": "^3.2.5",
     "sass": "^1.71.0",
     "sass-loader": "^14.1.1",
     "ts-loader": "^9.5.1",

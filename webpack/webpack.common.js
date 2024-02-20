@@ -7,7 +7,6 @@ module.exports = {
   entry: {
     style: path.join(__dirname, srcDir + 'scss/style.scss'),
     main: path.join(__dirname, srcDir + 'content.ts'),
-    background: path.join(__dirname, srcDir + 'background.ts'),
   },
   output: {
     path: path.join(__dirname, '../dist'),
