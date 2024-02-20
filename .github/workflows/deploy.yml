@@ -1,0 +1,32 @@
+name: Deploy to Chrome Web Store
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          cache: npm
+      - name: Build extension
+        run: |
+          npm ci
+          npm run build
+      - uses: cardinalby/webext-buildtools-pack-extension-dir-action@v1
+        with:
+          extensionDir: dist
+          zipFilePath: ts-crx.zip
+      - uses: cardinalby/webext-buildtools-chrome-webstore-action@v1
+        with:
+          zipFilePath: ts-crx.zip
+          extensionId: EXTENSION_ID # like bngbbjmfooocodklnppanoopdddpflox
+          apiClientId: ${{ secrets.CLIENT_ID }}
+          apiClientSecret: ${{ secrets.CLIENT_SECRET }}
+          apiRefreshToken: ${{ secrets.REFRESH_TOKEN }}
