@@ -27,10 +27,20 @@ const mapRooms = (fn: (room: Room) => void) => {
   }
 };
 
+const hideConferenceRooms = () => {
+  mapRooms((room: Room) => {
+    const heading = room.querySelector(headingSelector) as HTMLHeadingElement;
+
+    if (heading && !heading.textContent?.includes('電話')) {
+      room.style.display = 'none';
+    }
+  });
+};
+
 const initialize = () => {
   const resetButton = document.evaluate(
     '//button[text()="絞り込み検索を解除"]',
-    getBookings(),
+    document.body,
     null,
     XPathResult.FIRST_ORDERED_NODE_TYPE,
   ).singleNodeValue;
@@ -52,33 +62,29 @@ const initialize = () => {
 
   button.addEventListener('click', () => {
     if (button.classList.contains('active')) return showAllRooms();
-
+    hideConferenceRooms();
     button.classList.add('active');
-
-    const hideConferenceRoom = (room: Room) => {
-      const heading = room.querySelector(headingSelector) as HTMLHeadingElement;
-
-      if (!heading.textContent?.includes('電話')) {
-        room.style.display = 'none';
-      }
-    };
-
-    mapRooms(hideConferenceRoom);
   });
 
   document.querySelector('.quick-filter-section')?.appendChild(button);
 };
 
-const waitForSelector = (selector: string) =>
-  new Promise((resolve) => {
-    if (document.querySelector(selector)) {
-      return resolve(document.querySelector(selector));
+const waitForSelector = (selector: string, to: 'shown' | 'hidden') =>
+  new Promise<void>((resolve) => {
+    if (
+      (document.querySelector(selector) && to === 'shown') ||
+      (!document.querySelector(selector) && to === 'hidden')
+    ) {
+      return resolve();
     }
 
     const observer = new MutationObserver(() => {
-      if (document.querySelector(selector)) {
+      if (
+        (document.querySelector(selector) && to === 'shown') ||
+        (!document.querySelector(selector) && to === 'hidden')
+      ) {
         observer.disconnect();
-        resolve(document.querySelector(selector));
+        resolve();
       }
     });
 
@@ -106,14 +112,30 @@ const alignToNow = () => {
     );
 
     room
-      .querySelector('.fc-scroller')
+      .querySelector('.fc-scroller.fc-scroller-liquid-absoluteco')
       ?.scrollTo(parseInt(indicator?.style.left ?? '0', 10), 0);
   });
 };
 
 (async () => {
-  await waitForSelector('.fc-scroller');
+  const selector = '.fc-scroller';
+  await waitForSelector('.quick-filter-section', 'shown');
   initialize();
-  changeHeadingTitle();
-  alignToNow();
+  while (1) {
+    await waitForSelector(selector, 'shown');
+    if (document.querySelector('.day-status')) {
+      for (let j = 0; j < 2; j++) {
+        document.querySelectorAll(selector)?.forEach((i) => i.remove());
+        await waitForSelector(selector, 'shown');
+      }
+    }
+    if (
+      document.querySelector('#pdm-filter-rooms')?.classList.contains('active')
+    ) {
+      hideConferenceRooms();
+    }
+    changeHeadingTitle();
+    alignToNow();
+    await waitForSelector(selector, 'hidden');
+  }
 })();
