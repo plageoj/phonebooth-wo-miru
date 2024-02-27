@@ -5,7 +5,8 @@
   "description": "WeWorkのフォンブースだけを表示します",
   "minimum_chrome_version": "88",
   "icons": {
-    "50": "icons/icon50.png"
+    "50": "icons/icon50.png",
+    "128": "icons/icon128.png"
   },
   "content_scripts": [
     {
