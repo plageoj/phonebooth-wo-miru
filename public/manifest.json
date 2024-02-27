@@ -10,7 +10,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://members.wework.com/workplaceone/content2/rooms"
+        "https://members.wework.com/workplaceone/content2/bookings/rooms"
       ],
       "js": [
         "main.js"

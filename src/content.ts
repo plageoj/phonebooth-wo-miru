@@ -3,7 +3,7 @@ const headingSelector = 'h2.card-title';
 type Room = HTMLLIElement;
 
 const getBookings = () => {
-  const bookings = document.querySelector('memberweb-booking-drilldown');
+  const bookings = document.querySelector('wework-booking-room-memberweb');
   if (!bookings) throw new Error('Could not find the bookings element');
 
   return bookings;
@@ -15,7 +15,7 @@ const getBookings = () => {
  */
 const mapRooms = (fn: (room: Room) => void) => {
   const rooms = document.evaluate(
-    '//li[a//h2[@class="card-title"]]',
+    '//li[//h2[@class="card-title"]]',
     getBookings(),
     null,
     XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
@@ -23,9 +23,7 @@ const mapRooms = (fn: (room: Room) => void) => {
 
   for (let i = 0; i < rooms.snapshotLength; i++) {
     const room = rooms.snapshotItem(i) as Room;
-    setTimeout(() => {
-      fn(room);
-    });
+    setTimeout(() => fn(room));
   }
 };
 
